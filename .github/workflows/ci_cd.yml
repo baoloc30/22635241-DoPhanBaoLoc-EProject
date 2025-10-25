@@ -107,8 +107,6 @@ jobs:
 
     - name: Run tests for product
       run: |
-        cd auth &&
-        npm start &
         cd product
         npm test
 
