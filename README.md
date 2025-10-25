@@ -129,7 +129,7 @@ Trước khi bắt đầu, hãy đảm bảo bạn đã cài đặt:
 
 ```bash
 git clone https://github.com/baoloc30/22635241-DoPhanBaoLoc-EProject.git
-cd EProject
+cd 22635241-DoPhanBaoLoc-EProject
 ```
 
 #### 2️. Tạo các file `.env` cần thiết
