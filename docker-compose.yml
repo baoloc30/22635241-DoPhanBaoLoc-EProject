@@ -1,0 +1,115 @@
+version: '3.8'
+
+services:
+  auth:
+    build: ./auth
+    ports:
+      - "3000:3000"
+    depends_on:
+      mongo-auth:
+        condition: service_started
+    env_file:
+      - ./auth/.env
+    networks:
+      - ecommerce
+
+  product:
+    build: ./product
+    ports:
+      - "3001:3001"
+    depends_on:
+      mongo-product:
+        condition: service_started
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      - RABBITMQ_URL=amqp://rabbitmq:5672
+    env_file:
+      - ./product/.env
+    networks:
+      - ecommerce
+  
+  order:
+    build: ./order
+    ports:
+      - "3002:3002"
+    depends_on:
+      mongo-order:
+        condition: service_started
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      - RABBITMQ_URL=amqp://rabbitmq:5672
+    env_file:
+      - ./order/.env
+    networks:
+      - ecommerce
+
+  api-gateway:
+    build: ./api-gateway
+    ports:
+      - "3003:3003"
+    environment:
+      - RABBITMQ_URL=amqp://rabbitmq:5672
+    networks:
+      - ecommerce
+  
+  rabbitmq:
+    image: rabbitmq:3.11-management
+    container_name: 'rabbitmq'
+    ports:
+        - 5672:5672
+        - 15672:15672
+    volumes:
+        - rabbitmq_data:/var/lib/rabbitmq
+        - rabbitmq_log:/var/log/rabbitmq
+    networks:
+        - ecommerce
+    healthcheck:
+        test: ["CMD", "rabbitmqctl", "status"]
+        interval: 10s
+        timeout: 10s
+        retries: 5
+
+  mongo-auth:
+    image: mongo:latest
+    container_name: mongodb_for_auth
+    ports:
+      - "27117:27017"
+    volumes:
+      - mongo-auth-data:/data/db
+    networks:
+      - ecommerce
+
+  mongo-product:
+    image: mongo:latest
+    container_name: mongodb_for_product
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongo-product-data:/data/db
+    networks:
+      - ecommerce
+
+  mongo-order:
+    image: mongo:latest
+    container_name: mongodb_for_order
+    ports:
+      - "27019:27017"
+    volumes:
+      - mongo-order-data:/data/db
+    networks:
+      - ecommerce
+
+networks:
+  ecommerce:
+
+volumes:
+  mongo-auth-data:
+    driver: local
+  mongo-product-data:
+    driver: local
+  mongo-order-data:
+    driver: local
+  rabbitmq_data:
+  rabbitmq_log:
