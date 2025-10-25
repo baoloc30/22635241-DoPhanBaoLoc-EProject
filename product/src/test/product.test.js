@@ -17,38 +17,37 @@ describe("Products", () => {
     // Authenticate with the auth microservice to get a token
     try {
       const registerRes = await chai
-          .request("http://localhost:3000")
-          .post("/register")
-          .send({
-              username: process.env.LOGIN_TEST_USER,
-              password: process.env.LOGIN_TEST_PASSWORD,
-          });
+        .request("http://localhost:3000")
+        .post("/register")
+        .send({
+            username: process.env.LOGIN_TEST_USER,
+            password: process.env.LOGIN_TEST_PASSWORD,
+        });
 
-      console.log("✅ Registered test user:", registerRes.status);
-  } catch (err) {
-      console.log("ℹ️ Possibly already registered:", err.response && err.response.status);
-  }
+      console.log("Registered test user:", registerRes.status);
+    } catch (err) {
+      console.log("Possibly already registered:", err.response && err.response.status);
+    }
 
-  const authRes = await chai
+    const authRes = await chai
       .request("http://localhost:3000")
       .post("/login")
       .send({
-          username: process.env.LOGIN_TEST_USER,
-          password: process.env.LOGIN_TEST_PASSWORD,
+        username: process.env.LOGIN_TEST_USER,
+        password: process.env.LOGIN_TEST_PASSWORD,
       });
 
-      console.log("🔑 Auth response:", authRes.status, authRes.body);
+      console.log("Auth response:", authRes.status, authRes.body);
 
       if (!authRes.body.token) {
-          throw new Error("❌ No token received from Auth service. Check LOGIN_TEST_USER and LOGIN_TEST_PASSWORD!");
+        throw new Error("No token received from Auth service. Check LOGIN_TEST_USER and LOGIN_TEST_PASSWORD!");
       }
 
       authToken = authRes.body.token;
-      console.log("✅ Token received:", authToken);
+      console.log("Token received:", authToken);
 
       app.start();
   });
-
 
   after(async () => {
     await app.disconnectDB();
