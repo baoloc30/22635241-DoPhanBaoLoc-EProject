@@ -15,7 +15,7 @@ jobs:
           --health-interval=10s
           --health-timeout=5s
           --health-retries=5
-          
+
       mongo-auth:
         image: mongo:6
         ports:
@@ -103,7 +103,7 @@ jobs:
         cd auth
         npm start &
         echo "Waiting for auth service..."
-        npx wait-on http://localhost:3000/auth --timeout 30000
+        npx wait-on http://localhost:3000 --timeout 60000
 
     - name: Run tests for product
       run: |
