@@ -103,7 +103,7 @@ jobs:
         cd auth
         npm start &
         echo "Waiting for auth service..."
-        npx wait-on http://localhost:3000/ --timeout 90000
+        npx wait-on http://localhost:3000/auth --timeout 30000
 
     - name: Run tests for product
       run: |
