@@ -55,11 +55,11 @@ jobs:
 
     - name: Create .env file
       run: |
-        echo "MONGODB_AUTH_URI=${{ secrets.MONGODB_PRODUCT_URI }}" >> auth/.env
+        echo "MONGODB_AUTH_URI=mongodb://localhost:27017/auth_db" >> auth/.env
         echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> auth/.env
 
         echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> product/.env
-        echo "MONGODB_PRODUCT_URI=${{ secrets.MONGODB_PRODUCT_URI }}" >> product/.env
+        echo "MONGODB_PRODUCT_URI=mongodb://localhost:27017/product_db" >> product/.env
 
         echo "LOGIN_TEST_USER=${{ secrets.LOGIN_TEST_USER }}" >> product/.env
         echo "LOGIN_TEST_PASSWORD=${{ secrets.LOGIN_TEST_PASSWORD }}" >> product/.env
@@ -76,12 +76,11 @@ jobs:
        
     - name: Wait for MongoDB
       run: |
-        for port in 27117 27018 27019; do
-          echo "⏳ Waiting for MongoDB on port $port..."
-          for i in {1..10}; do
-            nc -z localhost $port && echo "✅ MongoDB on $port ready!" && break
-            sleep 3
-          done
+        echo "Waiting for MongoDB to be ready..."
+        for i in {1..20}; do
+          nc -z localhost 27017 && echo "MongoDB is ready!" && break
+          echo "Waiting 5s..."
+          sleep 5
         done
 
     - name: Run tests for auth
