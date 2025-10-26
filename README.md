@@ -10,6 +10,8 @@ Mục tiêu của hệ thống là quản lý người dùng, sản phẩm và �
 
 Hệ thống được chia thành nhiều dịch vụ (service) nhỏ và độc lập. Mỗi service chịu trách nhiệm cho một phần nghiệp vụ riêng, khi giao tiếp với nhau mang lại nhiều lợi ích, cho phép có những tính năng mở rộng hệ thống, hoặc cô lập lỗi trên các module khác nhau, giúp việc phát triển và triển khai trở nên dễ dàng hơn. 
 
+<img width="810" alt="image" src="https://user-images.githubusercontent.com/69677864/223613048-384c48cd-f846-4741-9b0d-90fbb2442590.png">
+
 ### Các thành phần chính:
 
 * **API Gateway**:
@@ -50,7 +52,7 @@ Các service nghiệp vụ giao tiếp với nhau bằng cơ chế truyền thô
 - Product Service → RabbitMQ → Order Service
 ### Order Processing Flow
 - Client → API Gateway → Order Service → MongoDB
-- Order Service → RabbitMQ → Product Service (Inventory Check)
+- Order Service → RabbitMQ → Product Service
 
 ---
 
