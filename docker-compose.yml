@@ -2,6 +2,7 @@ version: '3.8'
 
 services:
   auth:
+    image: baoloc30/auth:latest
     build: ./auth
     ports:
       - "3000:3000"
@@ -14,6 +15,7 @@ services:
       - ecommerce
 
   product:
+    image: baoloc30/product:latest
     build: ./product
     ports:
       - "3001:3001"
@@ -30,6 +32,7 @@ services:
       - ecommerce
   
   order:
+    image: baoloc30/order:latest
     build: ./order
     ports:
       - "3002:3002"
@@ -46,6 +49,7 @@ services:
       - ecommerce
 
   api-gateway:
+    image: baoloc30/api-gateway:latest
     build: ./api-gateway
     ports:
       - "3003:3003"
